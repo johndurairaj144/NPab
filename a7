@@ -1,0 +1,25 @@
+import java.util.Arrays;
+public class Belmen {
+ public static void main(String args[]) {
+ int n = 4;
+ int sourceNode = 0;
+ int I = Integer.MAX_VALUE / 3; 
+ int g[][] = {{0, 2, 1, I}, {2, 0, I, 1}, {1, I, 0, 4}, {I, 1, 4, 0}}; //Graph (n*n elemnts)
+ int d[] = new int[n];//stores shortest distance
+ Arrays.fill(d, I);
+ d[sourceNode] = 0;
+ for (int i = 0; i < n; i++) {
+ for (int u = 0; u < n; u++) {
+ for (int v = 0; v < n; v++) {
+ if (d[u] + g[u][v] < d[v]) {
+ d[v] = d[u] + g[u][v];
+ }
+ }
+ }
+ }
+ int k = 0;
+ for (int distance : d) {
+ System.out.println("From Source to Node " + k++ + " Distance is" + distance);
+ }
+ }
+}
