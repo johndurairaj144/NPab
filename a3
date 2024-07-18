@@ -1,0 +1,47 @@
+package pgm3;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.net.*;
+public class client3 {
+ public static void main(String[] args) {
+ try {
+ Socket s = new Socket("localhost", 6666);
+ DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+ byte buffer[]= Files.readAllBytes(new File("A://pgm3.txt").toPath());
+ dout.writeBytes(new String(buffer));
+ dout.flush();
+ dout.close();
+ s.close();
+ System.out.println("File Sent");
+ } catch (Exception e) {
+ System.out.println(e);
+ }
+ }
+}
+
+
+package pgm3;
+
+import java.io.*;
+import java.net.*;
+public class server3 {
+ public static void main(String[] args) {
+ try {
+ ServerSocket ss = new ServerSocket(6666);
+ Socket s = ss.accept();
+ DataInputStream dis = new DataInputStream(s.getInputStream());
+ FileOutputStream fos = new FileOutputStream("A://output3.txt");
+ byte[] buffere = new byte[1024 * 40];
+ int bytesRead;
+ while ((bytesRead = dis.read(buffere)) != -1) {
+ fos.write(buffere, 0, bytesRead);
+ }
+ fos.close();
+ ss.close();
+ System.out.println("FileSaved");
+ } catch (Exception e) {
+ System.out.println(e);
+ }
+ }
+}
