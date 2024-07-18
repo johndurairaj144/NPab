@@ -1,0 +1,53 @@
+package pgm2;
+
+import java.io.*;
+import java.util.*;
+import java.net.*;
+public class client2 {
+ public static void main(String[] args) {
+ Scanner sc = new Scanner(System.in);
+ try {
+ System.out.println("Write the message");
+ Socket s = new Socket("localhost", 6666);
+ DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+ dout.writeUTF(sc.nextLine());
+ dout.flush();
+ dout.close();
+ s.close();
+ } catch (Exception e) {
+ System.out.println(e);
+ }
+ }
+}
+
+
+package pgm2;
+
+import java.io.*;
+import java.net.*;
+public class server2 {
+ public static ServerSocket server;
+ public static void main(String args[])throws Exception {
+ server=new ServerSocket(6666);
+ SocketServerThread m1=new SocketServerThread();
+ SocketServerThread m2=new SocketServerThread();
+ m1.start();
+ m2.start();
+ }
+ static class SocketServerThread extends Thread {
+ @Override
+ public void run() {
+ try {
+ while (true) {
+ Socket client = server.accept();
+ DataInputStream dis = new DataInputStream(client.getInputStream());
+ String str = (String) dis.readUTF();
+ System.out.println(new StringBuilder(str).reverse());
+ client.close();
+ }
+ } catch (Exception e) {
+ e.printStackTrace();
+ }
+ }
+ }
+}
