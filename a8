@@ -1,0 +1,46 @@
+import java.util.*;
+public class dijik {
+ public static void main(String args[]) {
+ int n = 4;
+ int I = Integer.MAX_VALUE / 3; 
+ int g[][] = {{0, 3, I, 7}, {3, 0, 4, 2}, {I, 4, 0, 5}, {7, 2, 5, 0}};
+ int s = 0;
+ int d[] = new int[n];
+ Arrays.fill(d, I);
+ d[s] = 0;//distacne of sourceNode is always 0
+ PriorityQueue<Node> q = new PriorityQueue<Node>(8,new Node());
+ q.add(new Node(s,0));
+ while (q.isEmpty()==false) {
+ int u=q.poll().node;
+ System.out.println(u);
+ for(int v=0;v<n;v++){
+ if(d[u] + g[u][v] < d[v]){
+ d[v]=d[u] + g[u][v];
+ q.add(new Node(v,d[v]));
+ }
+ }
+ }
+ int k=0;
+ for (int distance : d) {
+ System.out.println("From Source to Node " + k++ + " Distance is" + distance);
+ }
+ }
+}
+class Node implements Comparator<Node> {
+ int node;
+ int cost;
+ public Node(int node, int cost) {
+ this.node = node;
+ this.cost = cost;
+ }
+ public Node(){
+ }
+ @Override
+ public int compare(Node node1, Node node2) {
+ if (node1.cost < node2.cost)
+ return -1;
+ if (node1.cost > node2.cost)
+ return 1;
+ return 0;
+ }
+}
