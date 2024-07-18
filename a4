@@ -1,0 +1,32 @@
+package pgm4;
+
+import java.net.*;
+import java.io.File;
+import java.nio.file.Files;
+public class client4{
+ public static void main(String args[])throws Exception{
+ byte buffer[]=Files.readAllBytes(new File("A://pgm4.txt").toPath());
+ DatagramSocket client = new DatagramSocket();
+ InetAddress IPAddress = InetAddress.getByName("localhost");
+ DatagramPacket packet = new DatagramPacket(buffer, buffer.length, IPAddress, 6666);
+ client.send(packet);
+ System.out.println("File Sent");
+ }
+}
+
+
+package pgm4;
+
+import java.io.FileOutputStream;
+import java.net.*;
+public class server4{
+ public static void main(String args[])throws Exception{
+ byte[] buffer = new byte[1024]; //1KB size message
+ DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
+ DatagramSocket server = new DatagramSocket(6666);
+ server.receive(packet);
+ FileOutputStream fos = new FileOutputStream("A://output4.txt");
+ fos.write(packet.getData());
+ fos.close();
+ }
+}
